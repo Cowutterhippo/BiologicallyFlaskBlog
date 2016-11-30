@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 from flask_babel import gettext
 from datetime import datetime
-from guess_language import guessLanguage
+# from guess_language import guessLanguage
 from app import app, db, lm, oid, babel
 from .forms import LoginForm, EditForm, PostForm, SearchForm
 from .models import User, Post
@@ -233,11 +233,11 @@ def search_results(query):
                            results=results)
 
 
-@app.route('/translate', methods=['POST'])
-@login_required
-def translate():
-    return jsonify({
-        'text': microsoft_translate(
-            request.form['text'],
-            request.form['sourceLang'],
-            request.form['destLang'])})
+# @app.route('/translate', methods=['POST'])
+# @login_required
+# def translate():
+#     return jsonify({
+#         'text': microsoft_translate(
+#             request.form['text'],
+#             request.form['sourceLang'],
+#             request.form['destLang'])})
