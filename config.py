@@ -7,7 +7,7 @@ SECRET_KEY = 'secretpassword'
 
 
 if os.environ.get('DATABASE_URL') is None:
-    SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db') +
+    SQLALCHEMY_DATABASE_URI = ('postgresql:///' + os.path.join(basedir, 'app.db') +
                                '?check_same_thread=False')
 else:
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
