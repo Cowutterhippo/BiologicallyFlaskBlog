@@ -7,7 +7,7 @@ SECRET_KEY = 'secretpassword'
 
 
 if os.environ.get('DATABASE_URL') is None:
-    SQLALCHEMY_DATABASE_URI = ('postgresql:///' + os.path.join(basedir, 'app.db') +
+    SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db') +
                                '?check_same_thread=False')
 else:
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
@@ -22,12 +22,24 @@ WHOOSH_ENABLED = os.environ.get('HEROKU') is None
 DATABASE_QUERY_TIMEOUT = 0.5
 
 # email server
-MAIL_SERVER = 'smtp.gmail.com'  # your mailserver
-MAIL_PORT = 465
+# MAIL_SERVER = 'smtp.gmail.com'  # your mailserver
+# MAIL_PORT = 587
+# MAIL_USE_TLS = True
+# MAIL_USERNAME = os.environ.get('Andrew.Kolansky@gmail.com')
+# MAIL_PASSWORD = os.environ.get('wearethepeoplewhoruletheworld')
+
+MAIL_SERVER = 'smtp.googlemail.com'
+MAIL_PORT = 587
 MAIL_USE_TLS = True
-MAIL_USE_SSL = False
-MAIL_USERNAME = os.environ.get('Andrew.Kolansky@gmail.com')
-MAIL_PASSWORD = os.environ.get('wearethepeoplewhoruletheworld')
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+FLASKY_MAIL_SUBJECT_PREFIX = '[Biologically]'
+FLASKY_MAIL_SENDER = 'Andrew Admin <Bio Logically Blog @example.com>'
+FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+FLASKY_POSTS_PER_PAGE = 20
+FLASKY_FOLLOWERS_PER_PAGE = 50
+FLASKY_COMMENTS_PER_PAGE = 30
+FLASKY_SLOW_DB_QUERY_TIME=0.5
 
 # available languages
 LANGUAGES = {

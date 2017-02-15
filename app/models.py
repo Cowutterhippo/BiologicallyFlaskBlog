@@ -3,6 +3,8 @@ import re
 from app import db
 from app import app
 from config import WHOOSH_ENABLED
+from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 import sys
 if sys.version_info >= (3, 0):
@@ -24,6 +26,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime)
@@ -49,6 +52,10 @@ class User(db.Model):
                 break
             version += 1
         return new_nickname
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
 
     @property
     def is_authenticated(self):
@@ -91,6 +98,10 @@ class User(db.Model):
             followers, (followers.c.followed_id == Post.user_id)).filter(
                 followers.c.follower_id == self.id).order_by(
                     Post.timestamp.desc())
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
 
     def __repr__(self):  # pragma: no cover
         return '<User %r>' % (self.nickname)

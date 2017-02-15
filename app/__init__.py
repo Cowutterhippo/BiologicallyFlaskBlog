@@ -5,11 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_babel import Babel, lazy_gettext
+from flask_bootstrap import Bootstrap
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, \
     MAIL_PASSWORD
 from .momentjs import momentjs
 
 app = Flask(__name__)
+Bootstrap(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 lm = LoginManager()
@@ -18,6 +20,7 @@ lm.login_view = 'login'
 lm.login_message = lazy_gettext('Please log in to access this page.')
 mail = Mail(app)
 babel = Babel(app)
+mail.init_app(app)
 
 
 class CustomJSONEncoder(JSONEncoder):
